@@ -96,10 +96,56 @@ function printFibonacciSeries(n) {
   return op;
 }
 
-document.getElementById("app").innerHTML = `
-<h1>factorial ${factorial(6)}</h1>
+/**
+ *  Subset Sum I
+ */
+function func(index, sum, arr, N, sumSubSet) {
+  if (index === N) {
+    sumSubSet.push(sum);
+    return;
+  }
+
+  func(index + 1, sum + arr[index], arr, N, sumSubSet);
+
+  func(index + 1, sum, arr, N, sumSubSet);
+}
+
+function subsetSums(arr, N) {
+  let sumSubset = [];
+  func(0, 0, arr, N, sumSubset);
+  sumSubset.sort((a, b) => a - b); // Sort the array in ascending order
+  return sumSubset;
+}
+
+function houserobber() {
+  const nums = [1, 2, 3, 1];
+  const dp = new Array(nums.length).fill(-1);
+
+  function getloot(index, dp) {
+    if (index === 0) return nums[index];
+
+    if (index < 0) return 0;
+
+    if (dp[index] !== -1) return dp[index];
+
+    const pick = nums[index] + getloot(index - 2, dp);
+    const notpick = 0 + getloot(index - 1, dp);
+
+    return (dp[index] = Math.max(pick, notpick));
+  }
+
+  return getloot(nums.length - 1, dp);
+}
+
+/**
+ * <h1>factorial ${factorial(6)}</h1>
 <h1>sumOfFirstNNaturalNumbers ${sumOfFirstNNaturalNumbers(5)}</h1>
 <h1>reverseArray ${arr}</h1>
 <h1>checkPalindrome ${checkPalindrome(pal, 0, pal.length - 1, true)}</h1>
 <h1>getFibo ${printFibonacciSeries(5)}</h1>
+<h1>subsetSums ${subsetSums([1, 2, 3], 3)}</h1>
+ */
+
+document.getElementById("app").innerHTML = `
+<h1>houserobber ${houserobber()}</h1>
 `;
