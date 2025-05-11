@@ -21,12 +21,10 @@ function printName(n) {
  * Print 1 to N using Recursion
  */
 function printNumbers(n) {
-  if (n <= 0) {
-    return;
+  if (n > 0) {
+    console.log(n);
+    return printNumbers(n - 1);
   }
-
-  printNumbers(n - 1);
-  console.log(n);
 }
 // printNumbers(5);
 
@@ -37,10 +35,10 @@ function print1toN(n) {
   if (n <= 0) {
     return;
   }
-  console.log(n);
   print1toN(n - 1);
+  console.log(n);
 }
-// print1toN(5);
+print1toN(5);
 
 /**
  * Sum of first N Natural Numbers
@@ -96,10 +94,124 @@ function printFibonacciSeries(n) {
   return op;
 }
 
-document.getElementById("app").innerHTML = `
-<h1>factorial ${factorial(6)}</h1>
+/**
+ *  Subset Sum I
+ */
+function func(index, sum, arr, N, sumSubSet) {
+  if (index === N) {
+    sumSubSet.push(sum);
+    return;
+  }
+
+  func(index + 1, sum + arr[index], arr, N, sumSubSet);
+
+  func(index + 1, sum, arr, N, sumSubSet);
+}
+
+// function subsetSums(arr, N) {
+//   let sumSubset = [];
+//   func(0, 0, arr, N, sumSubset);
+//   sumSubset.sort((a, b) => a - b); // Sort the array in ascending order
+//   return sumSubset;
+// }
+
+function houserobber() {
+  const nums = [1, 2, 3, 1];
+  let pick, notpick;
+
+  function getloot(index) {
+    if (index === 0) return nums[index];
+
+    if (index < 0) return 0;
+
+    pick = getloot(index) + getloot(index - 2);
+    notpick = 0 + getloot(index - 1);
+
+    return Math.max(pick, notpick);
+  }
+
+  return getloot(nums.length - 1);
+}
+
+function printSubSequence(inputArr) {
+  const output = [];
+  function backtrackSequence(index, arr) {
+    if (index === inputArr.length) {
+      console.log(arr);
+      return;
+    }
+
+    backtrackSequence(index + 1, [...arr, inputArr[index]]);
+    backtrackSequence(index + 1, [...arr]);
+  }
+
+  backtrackSequence(0, []);
+  return output;
+}
+
+function printSumSubSequence(inputArr, targetSum) {
+  const output = [];
+  function backtrackSequence(index, arr, targetSum) {
+    if (index === inputArr.length) {
+      if (targetSum === 0) {
+        console.log([...arr]);
+        output.push([...arr]);
+      }
+      return;
+    }
+
+    backtrackSequence(
+      index + 1,
+      [...arr, inputArr[index]],
+      targetSum - inputArr[index]
+    );
+    backtrackSequence(index + 1, [...arr], targetSum);
+  }
+
+  backtrackSequence(0, [], targetSum);
+  return output;
+}
+
+function comibinationSum() {
+  const output = [];
+
+  function getSubSet(index, ds, inputArr, n, output, tagretSum) {
+    if (index === n) {
+      if (tagretSum === 0) {
+        output.push([...ds]);
+        return;
+      }
+    }
+
+    if (index === inputArr.length || tagretSum < 0) return;
+
+    if (inputArr[index] <= tagretSum) {
+      ds.push(inputArr[index]);
+      getSubSet(index, ds, inputArr, n, output, tagretSum - inputArr[index]);
+      ds.pop();
+    }
+
+    getSubSet(index + 1, ds, inputArr, n, output, tagretSum);
+  }
+
+  getSubSet(0, [], [2], [2].length, output, 1);
+
+  console.log(output);
+  return output;
+}
+
+/**
+ * <h1>factorial ${factorial(6)}</h1>
 <h1>sumOfFirstNNaturalNumbers ${sumOfFirstNNaturalNumbers(5)}</h1>
 <h1>reverseArray ${arr}</h1>
 <h1>checkPalindrome ${checkPalindrome(pal, 0, pal.length - 1, true)}</h1>
 <h1>getFibo ${printFibonacciSeries(5)}</h1>
+<h1>subsetSums ${subsetSums([1, 2, 3], 3)}</h1>
+<h1>subsetSums ${printSubSequence([ 3, 1, 2 ])}</h1>
+<h1>subsetSums ${printSumSubSequence([1, 2, 1], 2)}</h1>
+<h1>comibinationSum${comibinationSum()}</h1>
+ */
+
+document.getElementById("app").innerHTML = `
+<h1>subsetSums ${printSumSubSequence([1, 2, 1], 2)}</h1>
 `;
