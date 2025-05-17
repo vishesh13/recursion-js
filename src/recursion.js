@@ -200,6 +200,99 @@ function comibinationSum() {
   return output;
 }
 
+function combinationsTwo(candidates, target) {
+  const results = [];
+  candidates.sort((a, b) => a - b);
+
+  function backtrack(start, ds, sum) {
+    if (sum === target) {
+      results.push([...ds]);
+      return;
+    }
+    
+
+    for (let i = start; i < candidates.length; i++) {
+      if (i > start && candidates[i] === candidates[i - 1]) continue;
+
+      if (sum + candidates[i] > target) break;
+
+      ds.push(candidates[i]);
+      backtrack(i + 1, ds, sum + candidates[i]);
+      ds.pop();
+    }
+  }
+
+  backtrack(0, [], 0);
+  console.log("results", results);
+  return results;
+}
+
+
+function getSubsetSum(candidates, N) {
+  const results = [];
+
+  function backtrack(index, sum) {
+    if(index === N) {
+      results.push(sum);
+      return;
+    }
+
+    backtrack(index + 1, sum + candidates[index]);
+
+    backtrack(index + 1, sum);
+  }
+
+  backtrack(0, 0);
+  results.sort((a, b) => a - b);
+  console.log("results", results)
+  return results;
+}
+
+function getSubsetSum2(candidates) {
+  const results = [];
+  candidates.sort((a, b) => a - b);
+
+  function backtrack(start, ds) {
+
+      results.push([...ds]);
+
+    for (let i = start; i < candidates.length; i++) {
+      if (i > start && candidates[i] === candidates[i - 1]) continue;
+
+      ds.push(candidates[i]);
+      backtrack(i + 1, ds);
+      ds.pop();
+    }
+
+  }
+
+  backtrack(0, []);
+  console.log("results", results)
+  return results;
+}
+
+
+function getPermutations(nums) {
+  const results = [];
+
+  function backtracking(start, ds) {
+    if(start === nums.length) {
+      results.push([...ds]);
+      return;
+    }
+
+    for(let i = start; i < nums.length; i++) {
+      ds.push(nums[i]);
+      backtracking(i+1, ds);
+      ds.pop();
+    }
+  }
+
+  backtracking(0, []);
+  console.log("results", results)
+  return results;
+}
+
 /**
  * <h1>factorial ${factorial(6)}</h1>
 <h1>sumOfFirstNNaturalNumbers ${sumOfFirstNNaturalNumbers(5)}</h1>
@@ -210,8 +303,14 @@ function comibinationSum() {
 <h1>subsetSums ${printSubSequence([ 3, 1, 2 ])}</h1>
 <h1>subsetSums ${printSumSubSequence([1, 2, 1], 2)}</h1>
 <h1>comibinationSum${comibinationSum()}</h1>
+<h1>subsetSums ${printSumSubSequence([1, 2, 1], 2)}</h1>
+<h1>subsetSums ${combinationsTwo([10, 1, 2, 7, 6, 1, 5], 8)}</h1>
+<h1>subsetSums ${getSubsetSum2([1,2,2])}</h1>
+
  */
 
 document.getElementById("app").innerHTML = `
-<h1>subsetSums ${printSumSubSequence([1, 2, 1], 2)}</h1>
+<h1>subsetSums ${getPermutations([1,2,2])}</h1>
 `;
+
+// Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
